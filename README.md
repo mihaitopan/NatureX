@@ -3,12 +3,12 @@ Nature friendly Android App with tourist attractions rated by users placed on ma
 
 # Idea #
 NatureX comes from NatureExplore. The idea is to add new places from nature on map.
-Everyone can add a place and see the whole list of nearby places.
+Everyone can add a place(persistent online) and see the whole list of nearby places.
 The places have photos & description and can be rated/liked by others.
 
 (optional) The places can also be approved by priviliged users with an official review.
 
-(optional) Users can save a place in two local lists: already visited places & places to visit. 
+(optional) Users can save a place in two local lists(persistent on the device only): already visited places & places to visit. 
 
 # Platforms #
 * Android
