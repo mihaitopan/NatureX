@@ -7,3 +7,7 @@
 /Android/build
 /Android/captures
 /Android/.externalNativeBuild
+
+/ReactNative/node_modules/
+/ReactNative/.expo/
+/ReactNative/npm-debug.*
