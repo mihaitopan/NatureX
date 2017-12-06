@@ -50,6 +50,7 @@ public class ViewListActivity extends AppCompatActivity {
     void populateBikeList() {
         List<NaturePoint> currentList = getPlaces();
 
+        // listview, recycleview
         int i;
         LinearLayout listLayout = findViewById(R.id.listLayout);
 

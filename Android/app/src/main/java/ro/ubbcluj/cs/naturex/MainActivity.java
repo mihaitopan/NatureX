@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         MainActivity.naturePoints.add(new NaturePoint("location3", "name3", "description3", 9.0));
     }
 
-    void onSendClick(View v) {
+    public void onSendClick(View v) {
         TextView subjectView = findViewById(R.id.editText3);
         TextView messageView = findViewById(R.id.editText2);
 
