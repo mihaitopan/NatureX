@@ -1,20 +1,23 @@
 package ro.ubbcluj.cs.naturex;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
-
+import android.widget.ListView;
 import java.util.List;
+
 
 /**
  * Created by mihaitopan on 09/11/2017.
  */
 
 public class ViewListActivity extends AppCompatActivity {
+    public static ListView staticMyList;
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -26,6 +29,7 @@ public class ViewListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_list);
 
+		ViewListActivity.staticMyList = findViewById(R.id.myList);
         TabLayout layout = findViewById(R.id.viewListTabs);
         layout.getTabAt(1).select();
 
@@ -45,37 +49,30 @@ public class ViewListActivity extends AppCompatActivity {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {}
         });
+
+		Button createButton = findViewById(R.id.createButton);
+        createButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ViewListActivity.this, CreateActivity.class));
+            }
+        });
     }
     
     void populateBikeList() {
-        List<NaturePoint> currentList = getPlaces();
+        ListView listView = findViewById(R.id.myList);
+        listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, MainActivity.naturePoints));
 
-        // listview, recycleview
-        int i;
-        LinearLayout listLayout = findViewById(R.id.listLayout);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+                NaturePoint item = (NaturePoint) parent.getItemAtPosition(position);
+                String location = item.getLocation();
 
-        for(i = 0; i < currentList.size(); i++)
-        {
-            Button b = new Button(this);
-            b.setText(currentList.get(i).toString());
-            b.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onClickGoToDetails(v);
-                }
-            });
-
-            listLayout.addView(b);
-        }
-    }
-
-    List<NaturePoint> getPlaces() {
-        return MainActivity.naturePoints;
-    }
-
-    void onClickGoToDetails(View v) {
-        Intent intent = new Intent(this, DetailsActivity.class);
-        intent.putExtra("location", ((Button) v).getText());
-        startActivity(intent);
+                Intent intent = new Intent(ViewListActivity.this, DetailsActivity.class);
+                intent.putExtra("location", location);
+                startActivity(intent);
+            }
+        });
     }
 }

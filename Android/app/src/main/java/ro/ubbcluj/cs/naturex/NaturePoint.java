@@ -1,23 +1,30 @@
 package ro.ubbcluj.cs.naturex;
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+
 
 /**
  * Created by mihaitopan on 09/11/2017.
  */
 
+ @Entity(tableName = "naturepoints")
 public class NaturePoint {
+	@PrimaryKey @ColumnInfo(name="address")
     private String location;
+	
+	@ColumnInfo(name="name")
     private String name;
+	
+	@ColumnInfo(name="description")
     private String description;
+	
+	@ColumnInfo(name="rating")
     private Double rating;
-    private Integer noPeopleWhoRated;
 
-    public NaturePoint() {
-        this.location = "";
-        this.name = "NulPlace";
-        this.description = "basic empty place";
-        this.rating = 0.0;
-        this.noPeopleWhoRated = 0;
-    }
+    @Ignore
+    private Integer noPeopleWhoRated;
 
     public NaturePoint(String location, String name, String description, Double rating) {
         this.location = location;

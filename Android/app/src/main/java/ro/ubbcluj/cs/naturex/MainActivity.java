@@ -1,19 +1,26 @@
 package ro.ubbcluj.cs.naturex;
-
+import android.annotation.SuppressLint;
+import android.arch.persistence.room.Room;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 import java.util.List;
+
+
+/**
+ * Created by mihaitopan on 09/11/2017.
+ */
 
 public class MainActivity extends AppCompatActivity {
     Boolean isSubjectChanged = false;
     static List<NaturePoint> naturePoints;
-
+	static NaturePointDB databaseSingleton;
+    static Synchronizer synchronizer;
+	@SuppressLint("StaticFieldLeak")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,10 +43,18 @@ public class MainActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {}
         });
 
-        MainActivity.naturePoints = new ArrayList<>();
-        MainActivity.naturePoints.add(new NaturePoint("location1", "name1", "description1", 10.0));
-        MainActivity.naturePoints.add(new NaturePoint("location2", "name2", "description2", 8.0));
-        MainActivity.naturePoints.add(new NaturePoint("location3", "name3", "description3", 9.0));
+		// init the db
+        MainActivity.databaseSingleton = Room.databaseBuilder(getApplicationContext(), NaturePointDB.class, "dummy-database").build();
+        MainActivity.synchronizer = new Synchronizer(MainActivity.databaseSingleton);
+
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                MainActivity.naturePoints = MainActivity.synchronizer.getList();
+                return null;
+            }
+        }.execute();
     }
 
     public void onSendClick(View v) {
